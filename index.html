@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Ink Battle: Forest Arena</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <!-- ===================== MENU ===================== -->
+  <div id="menu">
+    <div id="mainMenu" class="pane" style="display:flex">
+      <h1>INK BATTLE<span class="sub">Forest Arena</span></h1>
+      <p class="tag">Splat your friends. Catch critters. Grab power-ups. Win the battle!</p>
+      <button id="btnSoloNav" class="big">🎮 Practice Solo</button>
+      <button id="btnHostNav" class="big">🌐 Host a Game</button>
+      <button id="btnJoinNav" class="big">🔑 Join a Game</button>
+      <p class="hint">WASD to move · Mouse to aim &amp; shoot · E to recruit a critter</p>
+    </div>
+
+    <div id="soloPane" class="pane">
+      <h2>Practice Solo</h2>
+      <p class="tag">Battle two forest bots to warm up.</p>
+      <input id="soloName" type="text" maxlength="14" placeholder="Your name" value="Player" />
+      <button id="btnStartSolo" class="big">Start</button>
+      <button id="backFromSolo" class="ghost">← Back</button>
+    </div>
+
+    <div id="hostPane" class="pane">
+      <h2>Host a Game</h2>
+      <p class="tag">Get a room code and share it with up to 3 friends.</p>
+      <input id="hostName" type="text" maxlength="14" placeholder="Your name" value="Player" />
+      <button id="btnStartHost" class="big">Create Room</button>
+      <div id="hostLobby">
+        <p>Room code — tell your friends:</p>
+        <div id="roomCodeDisplay">-----</div>
+        <div id="lobbyPlayers" class="lobby-list"></div>
+        <button id="btnStartMatch" class="big">Start Battle!</button>
+      </div>
+      <button id="backFromHost" class="ghost">← Back</button>
+    </div>
+
+    <div id="joinPane" class="pane">
+      <h2>Join a Game</h2>
+      <p class="tag">Enter the room code your friend gave you.</p>
+      <input id="joinName" type="text" maxlength="14" placeholder="Your name" value="Player" />
+      <input id="joinCode" type="text" maxlength="5" placeholder="ROOM CODE" style="text-transform:uppercase" />
+      <button id="btnJoin" class="big">Join</button>
+      <p id="joinStatus" class="status"></p>
+      <button id="backFromJoin" class="ghost">← Back</button>
+    </div>
+  </div>
+
+  <!-- ===================== HUD ===================== -->
+  <div id="hud">
+    <div id="topBar">
+      <div id="timer">4:00</div>
+      <div id="scoreboard"></div>
+    </div>
+
+    <div id="bottomLeft">
+      <div class="bar-label">INK</div>
+      <div class="bar-track"><div id="ammoFill" class="bar-fill ammo"></div></div>
+      <div class="bar-label">HP</div>
+      <div class="bar-track"><div id="hpFill" class="bar-fill hp"></div></div>
+    </div>
+
+    <div id="powerupBadge"><span id="powerupLabel"></span></div>
+    <div id="recruitHint">Press <b>E</b> to recruit!</div>
+    <div id="splattedBanner">Splatted! Respawning…</div>
+  </div>
+
+  <!-- ===================== END SCREEN ===================== -->
+  <div id="endScreen">
+    <h2>Match Over!</h2>
+    <div id="endRows"></div>
+    <button id="btnRematch" class="big">Play Again</button>
+    <button id="btnEndToMenu" class="ghost">Main Menu</button>
+  </div>
+
+  <script src="js/vendor/peerjs.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/sim.js"></script>
+  <script src="js/network.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/game.js"></script>
+  <script>Game.init();</script>
+</body>
+</html>
