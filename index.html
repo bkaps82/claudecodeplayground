@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Paint Duel: Octagon of Death</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <div id="ui-root">
+      <div id="hud" class="hidden">
+        <div class="hud-side hud-left">
+          <div class="fighter-name p1-color">SHIRO</div>
+          <div class="coverage-bar">
+            <div class="coverage-fill p1-fill" id="p1-fill"></div>
+          </div>
+          <div class="parts-grid" id="p1-parts"></div>
+        </div>
+        <div class="round-info">
+          <div id="round-timer"></div>
+        </div>
+        <div class="hud-side hud-right">
+          <div class="fighter-name p2-color">AKA</div>
+          <div class="coverage-bar">
+            <div class="coverage-fill p2-fill" id="p2-fill"></div>
+          </div>
+          <div class="parts-grid" id="p2-parts"></div>
+        </div>
+      </div>
+
+      <div id="countdown" class="hidden"></div>
+
+      <div id="menu-screen" class="overlay-screen hidden">
+        <h1 class="game-title">PAINT DUEL<span class="subtitle">Octagon of Death</span></h1>
+        <p class="tagline">Splatter your rival head to toe. First fighter fully painted is finished.</p>
+        <div class="controls-columns">
+          <div class="controls-col">
+            <h2 class="p1-color">Player 1 — SHIRO</h2>
+            <ul>
+              <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> Move</li>
+              <li><kbd>Space</kbd> Paint Slash</li>
+            </ul>
+          </div>
+          <div class="controls-col">
+            <h2 class="p2-color">Player 2 — AKA</h2>
+            <ul>
+              <li><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> Move</li>
+              <li><kbd>Enter</kbd> Paint Slash</li>
+            </ul>
+          </div>
+        </div>
+        <button id="start-btn" class="primary-btn">ENTER THE OCTAGON</button>
+        <p class="hint">Cover every body part in paint to win. Nowhere left un-splattered, no escape.</p>
+      </div>
+
+      <div id="gameover-screen" class="overlay-screen hidden">
+        <h1 class="game-title" id="winner-title">WINNER</h1>
+        <p class="tagline" id="winner-sub">Fully painted, head to toe.</p>
+        <button id="restart-btn" class="primary-btn">FIGHT AGAIN</button>
+      </div>
+
+      <div id="loading-screen" class="overlay-screen">
+        <div class="spinner"></div>
+        <p>Sharpening swords…</p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

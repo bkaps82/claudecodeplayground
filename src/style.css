@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;900&display=swap');
+
+:root {
+  --p1: #4fd3ff;
+  --p1-glow: #7fe8ff;
+  --p2: #ff4f7d;
+  --p2-glow: #ff8fab;
+  --bg: #05060c;
+  --panel: rgba(10, 12, 24, 0.72);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+  font-family: 'Rajdhani', sans-serif;
+  color: #eef2ff;
+  -webkit-font-smoothing: antialiased;
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+#ui-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- HUD ---------- */
+
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 22px 28px;
+  gap: 20px;
+}
+
+.hud-side {
+  width: 320px;
+  max-width: 38vw;
+}
+
+.hud-right {
+  text-align: right;
+}
+
+.fighter-name {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 12px currentColor;
+  margin-bottom: 6px;
+}
+
+.p1-color { color: var(--p1); }
+.p2-color { color: var(--p2); }
+
+.coverage-bar {
+  height: 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+.coverage-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.18s ease-out;
+  border-radius: 8px;
+}
+
+.p1-fill {
+  background: linear-gradient(90deg, #1c7fa8, var(--p1));
+  box-shadow: 0 0 10px var(--p1-glow);
+  margin-left: auto;
+}
+
+.p2-fill {
+  background: linear-gradient(270deg, #a81c3f, var(--p2));
+  box-shadow: 0 0 10px var(--p2-glow);
+}
+
+.hud-right .coverage-fill {
+  float: right;
+}
+
+.parts-grid {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.hud-right .parts-grid {
+  justify-content: flex-end;
+}
+
+.part-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.part-icon.covered.p1 {
+  background: var(--p1);
+  border-color: var(--p1-glow);
+  box-shadow: 0 0 10px var(--p1-glow);
+}
+
+.part-icon.covered.p2 {
+  background: var(--p2);
+  border-color: var(--p2-glow);
+  box-shadow: 0 0 10px var(--p2-glow);
+}
+
+.round-info {
+  flex: 1;
+  text-align: center;
+  padding-top: 4px;
+}
+
+#round-timer {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+
+/* ---------- Countdown ---------- */
+
+#countdown {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 140px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.8), 0 0 90px rgba(120, 200, 255, 0.6);
+  pointer-events: none;
+  animation: countPulse 0.5s ease-out;
+}
+
+@keyframes countPulse {
+  from { transform: scale(1.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ---------- Overlay screens ---------- */
+
+.overlay-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(10, 10, 22, 0.55) 0%, rgba(4, 4, 10, 0.92) 75%);
+  pointer-events: all;
+  padding: 20px;
+}
+
+.game-title {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(40px, 8vw, 84px);
+  letter-spacing: 6px;
+  margin: 0;
+  background: linear-gradient(90deg, var(--p1), #fff 45%, var(--p2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 30px rgba(150, 180, 255, 0.45));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-title .subtitle {
+  font-size: 0.28em;
+  letter-spacing: 8px;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.65);
+  margin-top: 6px;
+}
+
+.tagline {
+  max-width: 560px;
+  color: rgba(230, 235, 255, 0.75);
+  font-size: 18px;
+  margin: 14px 0 30px;
+}
+
+.controls-columns {
+  display: flex;
+  gap: 48px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.controls-col h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  margin: 0 0 10px;
+}
+
+.controls-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  font-size: 15px;
+  color: rgba(230, 235, 255, 0.85);
+}
+
+.controls-col li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 26px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom-width: 2px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+
+.primary-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 17px;
+  padding: 16px 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: linear-gradient(90deg, var(--p1), var(--p2));
+  color: #05060c;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(120, 170, 255, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 40px rgba(160, 200, 255, 0.55);
+}
+
+.primary-btn:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.hint {
+  margin-top: 18px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.5px;
+}
+
+#winner-title {
+  -webkit-text-fill-color: unset;
+}
+
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--p1);
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 720px) {
+  .hud-side { width: 46vw; }
+  .fighter-name { font-size: 15px; }
+  #countdown { font-size: 90px; }
+}
