@@ -19,11 +19,11 @@ export class PaintSystem {
   }
 
   spawn({ origin, targetPos, color, owner }) {
+    // full 3D aim: the y-component matters, otherwise paint flies at sword-tip
+    // height forever and heads/legs can never be reached
     const dir = targetPos.clone().sub(origin);
-    dir.y = 0;
     if (dir.lengthSq() < 0.0001) dir.set(0, 0, owner === 0 ? -1 : 1);
     dir.normalize();
-    // small upward arc-ish aim toward torso height already baked into targetPos
 
     const mat = new THREE.MeshBasicMaterial({ color });
     mat.color.multiplyScalar(1.7);
@@ -125,7 +125,7 @@ export class PaintSystem {
         }
       }
 
-      if (hit || p.life <= 0 || p.mesh.position.length() > 14) {
+      if (hit || p.life <= 0 || p.mesh.position.y < -0.05 || p.mesh.position.length() > 14) {
         this.scene.remove(p.mesh, p.light);
         p.mesh.material.dispose();
         this.projectiles.splice(i, 1);
