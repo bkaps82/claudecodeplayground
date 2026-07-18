@@ -573,11 +573,20 @@ function doJoin() {
   localIdx = 1;
   ui.setNetStatus('Connecting…');
 
+  net.onStatus = (status) => {
+    const texts = {
+      signaling: 'Contacting matchmaking server…',
+      'room-found': 'Room found — connecting to host…',
+      negotiating: 'Negotiating connection… (can take ~15s on cellular)',
+    };
+    if (texts[status]) ui.setNetStatus(texts[status]);
+  };
   net.join(code, {
     onFailure: (reason) => {
       const msgs = {
         'no-such-room': 'No room with that code. Double-check with the host.',
-        timeout: 'Could not reach the host. Both devices need internet.',
+        timeout: 'Connection timed out. Try again — or switch one phone to Wi-Fi; some carriers block phone-to-phone connections.',
+        'ice-failed': 'The networks blocked a direct connection. Try again, or put one phone on Wi-Fi.',
       };
       teardownNet(msgs[reason] || `Connection failed (${reason}).`);
     },
