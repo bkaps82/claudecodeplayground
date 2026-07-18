@@ -635,3 +635,16 @@ renderer.setAnimationLoop(animate);
 
 ui.hideLoading();
 ui.showMenu();
+
+// test/debug handle, only exposed with ?debug=1
+if (new URLSearchParams(window.location.search).has('debug')) {
+  window.__pd = {
+    p1,
+    p2,
+    characters,
+    paintSystem,
+    controls,
+    get state() { return state; },
+    get netRole() { return netRole; },
+  };
+}

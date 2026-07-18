@@ -498,11 +498,14 @@ body.touch .controls-columns {
 }
 
 @media (max-width: 720px) {
-  .hud-side { width: 46vw; }
+  #hud { padding: 12px 12px; gap: 8px; }
+  .round-info { display: none; }
+  .hud-side { width: 47vw; }
   .fighter-name { font-size: 15px; }
   #countdown { font-size: 90px; }
   .coverage-bar { height: 12px; }
-  .part-icon { width: 24px; height: 24px; font-size: 11px; }
+  .part-icon { width: 22px; height: 22px; font-size: 10px; }
+  .parts-grid { gap: 4px; flex-wrap: wrap; }
   .game-title { letter-spacing: 3px; }
   .controls-columns { gap: 22px; }
   .primary-btn, .secondary-btn { padding: 13px 20px; font-size: 14px; }
