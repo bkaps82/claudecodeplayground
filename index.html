@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>Paint Duel: Octagon of Death</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>" />
   </head>
@@ -51,9 +52,28 @@
             </ul>
           </div>
         </div>
-        <button id="start-btn" class="primary-btn">ENTER THE OCTAGON</button>
+        <div class="mode-buttons">
+          <button id="start-btn" class="primary-btn">LOCAL DUEL</button>
+          <button id="host-btn" class="secondary-btn">HOST ONLINE</button>
+          <button id="join-btn" class="secondary-btn">JOIN ONLINE</button>
+        </div>
+        <div id="join-row" class="join-row hidden">
+          <input id="join-code" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="CODE" autocomplete="off" />
+          <button id="join-go-btn" class="secondary-btn">JOIN</button>
+        </div>
+        <p id="net-status" class="net-status hidden"></p>
         <p class="hint">Cover every body part in paint to win. Nowhere left un-splattered, no escape.</p>
       </div>
+
+      <div id="host-screen" class="overlay-screen hidden">
+        <h1 class="game-title">ROOM CODE</h1>
+        <div id="host-code" class="room-code">0000</div>
+        <p class="tagline">Share this code with your rival. Waiting for them to join…</p>
+        <div class="spinner"></div>
+        <button id="host-cancel-btn" class="secondary-btn">CANCEL</button>
+      </div>
+
+      <div id="touch-root"></div>
 
       <div id="gameover-screen" class="overlay-screen hidden">
         <h1 class="game-title" id="winner-title">WINNER</h1>

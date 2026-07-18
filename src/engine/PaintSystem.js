@@ -3,7 +3,7 @@ import * as THREE from 'three';
 const PROJECTILE_RADIUS = 0.1;
 const PROJECTILE_SPEED = 13;
 const MAX_LIFETIME = 1.4;
-const HIT_AMOUNT = 0.19;
+export const HIT_AMOUNT = 0.19;
 
 const sphereGeo = new THREE.SphereGeometry(1, 10, 8);
 const trailGeo = new THREE.SphereGeometry(1, 6, 5);
@@ -16,14 +16,25 @@ export class PaintSystem {
     this.trailBits = [];
     this.bursts = [];
     this.onHit = null; // (point, color) => void, hook for sfx/screenshake
+    // networking hooks: authoritative side relays these, visual side replays them
+    this.applyHits = true;
+    this.onSpawn = null;   // ({id, origin, dir, owner}) => void
+    this.onHitInfo = null; // ({id, targetIdx, part, point, normal, owner}) => void
+    this._nextId = 1;
   }
 
-  spawn({ origin, targetPos, color, owner }) {
+  spawn({ origin, targetPos, color, owner, dir: explicitDir, id: explicitId }) {
     // full 3D aim: the y-component matters, otherwise paint flies at sword-tip
     // height forever and heads/legs can never be reached
-    const dir = targetPos.clone().sub(origin);
-    if (dir.lengthSq() < 0.0001) dir.set(0, 0, owner === 0 ? -1 : 1);
-    dir.normalize();
+    let dir;
+    if (explicitDir) {
+      dir = explicitDir.clone();
+    } else {
+      dir = targetPos.clone().sub(origin);
+      if (dir.lengthSq() < 0.0001) dir.set(0, 0, owner === 0 ? -1 : 1);
+      dir.normalize();
+    }
+    const id = explicitId ?? this._nextId++;
 
     const mat = new THREE.MeshBasicMaterial({ color });
     mat.color.multiplyScalar(1.7);
@@ -37,6 +48,7 @@ export class PaintSystem {
     this.scene.add(light);
 
     this.projectiles.push({
+      id,
       mesh,
       light,
       dir,
@@ -45,6 +57,18 @@ export class PaintSystem {
       life: MAX_LIFETIME,
       trailTimer: 0,
     });
+
+    this.onSpawn?.({ id, origin: origin.clone(), dir: dir.clone(), owner });
+    return id;
+  }
+
+  removeById(id) {
+    const i = this.projectiles.findIndex((p) => p.id === id);
+    if (i === -1) return;
+    const p = this.projectiles[i];
+    this.scene.remove(p.mesh, p.light);
+    p.mesh.material.dispose();
+    this.projectiles.splice(i, 1);
   }
 
   _spawnTrailBit(position, color, scale) {
@@ -101,7 +125,7 @@ export class PaintSystem {
 
       let hit = false;
       const target = characters[1 - p.owner];
-      if (target && !target.defeated) {
+      if (this.applyHits && target && !target.defeated) {
         let closestName = null;
         let closestDist = Infinity;
         for (const [name, part] of target.parts.entries()) {
@@ -121,6 +145,14 @@ export class PaintSystem {
           const hitPoint = _tmpC.copy(worldPos).addScaledVector(normal, target.parts.get(closestName).radius);
           target.applyPaintHit(closestName, hitPoint, normal, p.color, HIT_AMOUNT);
           this.spawnBurst(hitPoint, normal, p.color);
+          this.onHitInfo?.({
+            id: p.id,
+            targetIdx: 1 - p.owner,
+            part: closestName,
+            point: [hitPoint.x, hitPoint.y, hitPoint.z],
+            normal: [normal.x, normal.y, normal.z],
+            owner: p.owner,
+          });
           hit = true;
         }
       }

@@ -11,6 +11,15 @@ export class UI {
     this.countdownEl = document.getElementById('countdown');
     this.startBtn = document.getElementById('start-btn');
     this.restartBtn = document.getElementById('restart-btn');
+    this.hostBtn = document.getElementById('host-btn');
+    this.joinBtn = document.getElementById('join-btn');
+    this.joinRow = document.getElementById('join-row');
+    this.joinCodeInput = document.getElementById('join-code');
+    this.joinGoBtn = document.getElementById('join-go-btn');
+    this.netStatus = document.getElementById('net-status');
+    this.hostScreen = document.getElementById('host-screen');
+    this.hostCodeEl = document.getElementById('host-code');
+    this.hostCancelBtn = document.getElementById('host-cancel-btn');
     this.winnerTitle = document.getElementById('winner-title');
     this.winnerSub = document.getElementById('winner-sub');
     this.p1Fill = document.getElementById('p1-fill');
@@ -90,6 +99,25 @@ export class UI {
 
   hideGameOver() {
     this.gameoverScreen.classList.add('hidden');
+  }
+
+  toggleJoinRow(show) {
+    this.joinRow.classList.toggle('hidden', !show);
+    if (show) this.joinCodeInput.focus();
+  }
+
+  setNetStatus(text) {
+    this.netStatus.textContent = text || '';
+    this.netStatus.classList.toggle('hidden', !text);
+  }
+
+  showHostScreen(code) {
+    this.hostCodeEl.textContent = code;
+    this.hostScreen.classList.remove('hidden');
+  }
+
+  hideHostScreen() {
+    this.hostScreen.classList.add('hidden');
   }
 
   showCountdown(text) {

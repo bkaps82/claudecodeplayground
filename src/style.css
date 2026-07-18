@@ -323,8 +323,188 @@ kbd {
   to { transform: rotate(360deg); }
 }
 
+body.touch .controls-columns {
+  display: none;
+}
+
+/* ---------- online menu ---------- */
+
+.mode-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.secondary-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-size: 15px;
+  padding: 14px 26px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.07);
+  color: #eef2ff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.join-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  align-items: stretch;
+}
+
+#join-code {
+  width: 130px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 10px;
+  text-align: center;
+  padding: 10px 4px 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  outline: none;
+}
+
+#join-code:focus {
+  border-color: var(--p1);
+  box-shadow: 0 0 12px rgba(79, 211, 255, 0.4);
+}
+
+.net-status {
+  margin-top: 14px;
+  font-size: 15px;
+  color: var(--p2-glow);
+  min-height: 1.2em;
+}
+
+.room-code {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(64px, 16vw, 120px);
+  letter-spacing: 18px;
+  padding-left: 18px; /* offset the trailing letter-spacing */
+  color: #fff;
+  text-shadow: 0 0 30px var(--p1-glow), 0 0 80px rgba(79, 211, 255, 0.4);
+  margin: 8px 0;
+}
+
+#host-screen .spinner {
+  margin: 18px 0;
+}
+
+/* ---------- touch controls ---------- */
+
+#touch-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.touchpad {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  width: 50%;
+  pointer-events: none;
+}
+
+.touchpad-left { left: 0; }
+.touchpad-right { right: 0; }
+
+.joy-zone {
+  position: absolute;
+  inset: 0;
+  top: 35%;
+  pointer-events: auto;
+}
+
+.joy-base {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--accent) 65%, transparent);
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  pointer-events: none;
+}
+
+.joy-base.active { opacity: 1; }
+
+.joy-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 55%, rgba(255,255,255,0.25));
+  box-shadow: 0 0 18px var(--accent);
+  transform: translate(-50%, -50%);
+}
+
+.attack-btn {
+  position: absolute;
+  bottom: 34px;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--accent) 80%, white);
+  background: color-mix(in srgb, var(--accent) 40%, rgba(10,12,24,0.6));
+  color: #fff;
+  font-size: 34px;
+  line-height: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 22px color-mix(in srgb, var(--accent) 60%, transparent);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.touchpad-left .attack-btn { left: 26px; }
+.touchpad-right .attack-btn { right: 26px; }
+
+.attack-btn.pressed {
+  transform: scale(0.92);
+  box-shadow: 0 0 34px var(--accent);
+}
+
+/* single-pad online mode: joystick spans the left side, button sits right */
+.touchpad-solo {
+  left: 0;
+  width: 100%;
+}
+
+.touchpad-solo .joy-zone {
+  right: auto;
+  width: 62vw;
+}
+
+.touchpad-solo .attack-btn {
+  right: 26px;
+}
+
 @media (max-width: 720px) {
   .hud-side { width: 46vw; }
   .fighter-name { font-size: 15px; }
   #countdown { font-size: 90px; }
+  .coverage-bar { height: 12px; }
+  .part-icon { width: 24px; height: 24px; font-size: 11px; }
+  .game-title { letter-spacing: 3px; }
+  .controls-columns { gap: 22px; }
+  .primary-btn, .secondary-btn { padding: 13px 20px; font-size: 14px; }
+  .tagline { font-size: 15px; margin: 10px 0 20px; }
 }

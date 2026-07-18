@@ -8,6 +8,8 @@ export class Controls {
     this.keys = new Set();
     this._attackQueue = [false, false];
     this.enabled = true;
+    // touch pads register here: index -> {move:{x,z}} source object
+    this.touchSources = [null, null];
 
     this._onKeyDown = this._onKeyDown.bind(this);
     this._onKeyUp = this._onKeyUp.bind(this);
@@ -43,12 +45,21 @@ export class Controls {
       if (k.has('ArrowUp')) z -= 1;
       if (k.has('ArrowDown')) z += 1;
     }
+    const touch = this.touchSources[playerIndex];
+    if (touch) {
+      x += touch.move.x;
+      z += touch.move.z;
+    }
     const len = Math.hypot(x, z);
     if (len > 1) {
       x /= len;
       z /= len;
     }
     return { x, z };
+  }
+
+  queueAttack(playerIndex) {
+    if (this.enabled) this._attackQueue[playerIndex] = true;
   }
 
   consumeAttack(playerIndex) {

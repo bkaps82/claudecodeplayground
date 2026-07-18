@@ -16,9 +16,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "peerjs": "^1.5.5",
     "three": "^0.160.0"
   },
   "devDependencies": {
+    "peer": "^1.0.2",
     "vite": "^5.4.21"
   }
 }
