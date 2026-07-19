@@ -11,7 +11,7 @@ const Game = (() => {
   let running = false;
 
   const keys = { up: false, down: false, left: false, right: false, shooting: false };
-  let mouseWorld = { x: 0, y: 0 };
+  let pointerScreen = { x: 0, y: 0 }; // last aim position in screen coords
   let lastCam = { x: 0, y: 0 };
 
   function el(id) { return document.getElementById(id); }
@@ -37,8 +37,8 @@ const Game = (() => {
     });
     window.addEventListener('keyup', (e) => handleKey(e.code, false));
     canvas.addEventListener('mousemove', (e) => {
-      mouseWorld.x = e.clientX + lastCam.x;
-      mouseWorld.y = e.clientY + lastCam.y;
+      pointerScreen.x = e.clientX;
+      pointerScreen.y = e.clientY;
     });
     canvas.addEventListener('mousedown', (e) => {
       if (e.button !== 0) return;
@@ -47,6 +47,87 @@ const Game = (() => {
     });
     window.addEventListener('mouseup', (e) => { if (e.button === 0) keys.shooting = false; });
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+    bindTouch();
+  }
+
+  // Touch controls: left half = virtual move joystick, right half = aim & shoot.
+  let moveTouchId = null;
+  let aimTouchId = null;
+  let joyBase = { x: 0, y: 0 };
+  const JOY_DEAD = 12;
+  const JOY_MAX = 48;
+
+  function bindTouch() {
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      Sound.unlock();
+      document.body.classList.add('touch-mode');
+      for (const t of e.changedTouches) {
+        if (t.clientX < window.innerWidth * 0.45 && moveTouchId === null) {
+          moveTouchId = t.identifier;
+          joyBase = { x: t.clientX, y: t.clientY };
+          showJoystick(t.clientX, t.clientY, t.clientX, t.clientY);
+        } else if (aimTouchId === null) {
+          aimTouchId = t.identifier;
+          pointerScreen.x = t.clientX;
+          pointerScreen.y = t.clientY;
+          keys.shooting = true;
+        }
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      for (const t of e.changedTouches) {
+        if (t.identifier === moveTouchId) {
+          updateJoystick(t.clientX, t.clientY);
+        } else if (t.identifier === aimTouchId) {
+          pointerScreen.x = t.clientX;
+          pointerScreen.y = t.clientY;
+        }
+      }
+    }, { passive: false });
+
+    const endTouch = (e) => {
+      e.preventDefault();
+      for (const t of e.changedTouches) {
+        if (t.identifier === moveTouchId) {
+          moveTouchId = null;
+          keys.up = keys.down = keys.left = keys.right = false;
+          hideJoystick();
+        } else if (t.identifier === aimTouchId) {
+          aimTouchId = null;
+          keys.shooting = false;
+        }
+      }
+    };
+    canvas.addEventListener('touchend', endTouch, { passive: false });
+    canvas.addEventListener('touchcancel', endTouch, { passive: false });
+  }
+
+  function updateJoystick(tx, ty) {
+    const dx = tx - joyBase.x;
+    const dy = ty - joyBase.y;
+    keys.left = dx < -JOY_DEAD;
+    keys.right = dx > JOY_DEAD;
+    keys.up = dy < -JOY_DEAD;
+    keys.down = dy > JOY_DEAD;
+    // clamp the knob visual to the joystick ring
+    const len = Math.hypot(dx, dy);
+    const k = len > JOY_MAX ? JOY_MAX / len : 1;
+    showJoystick(joyBase.x, joyBase.y, joyBase.x + dx * k, joyBase.y + dy * k);
+  }
+
+  function showJoystick(bx, by, kx, ky) {
+    const base = el('joyBase'), knob = el('joyKnob');
+    base.style.display = 'block'; knob.style.display = 'block';
+    base.style.left = `${bx}px`; base.style.top = `${by}px`;
+    knob.style.left = `${kx}px`; knob.style.top = `${ky}px`;
+  }
+
+  function hideJoystick() {
+    el('joyBase').style.display = 'none';
+    el('joyKnob').style.display = 'none';
   }
 
   function handleKey(code, down) {
@@ -292,7 +373,7 @@ const Game = (() => {
     if (!me) return null;
     return {
       up: keys.up, down: keys.down, left: keys.left, right: keys.right,
-      mx: mouseWorld.x, my: mouseWorld.y, shooting: keys.shooting,
+      mx: pointerScreen.x + lastCam.x, my: pointerScreen.y + lastCam.y, shooting: keys.shooting,
     };
   }
 
@@ -470,6 +551,8 @@ const Game = (() => {
     el('btnStartHost').onclick = () => { resetEndFlag(); startHost(el('hostName').value); };
     el('btnStartMatch').onclick = () => startHostedMatch();
     el('btnJoin').onclick = () => { resetEndFlag(); startClient(el('joinCode').value, el('joinName').value); };
+    el('recruitHint').addEventListener('click', () => tryRecruitLocal());
+    el('recruitHint').addEventListener('touchstart', (e) => { e.preventDefault(); tryRecruitLocal(); }, { passive: false });
     el('btnRematch').onclick = () => {
       resetEndFlag();
       if (mode === 'solo') startSolo(myName);

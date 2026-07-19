@@ -11,10 +11,21 @@ shares a short room code).
 
 ## How to play
 
+**On a computer:**
+
 - **Move:** `WASD` or arrow keys
 - **Aim:** mouse
 - **Shoot ink:** hold left mouse button
 - **Recruit a critter:** walk up to a wild one in the tall grass and press `E`
+
+**On a phone or tablet (touch):**
+
+- **Move:** press and drag anywhere on the left side of the screen — a
+  virtual joystick appears under your finger
+- **Aim & shoot:** press and hold anywhere on the right side; ink sprays
+  toward your finger
+- **Recruit a critter:** walk up to a wild one and tap the
+  "Tap here to recruit!" button that pops up
 - Splat opponents to score KOs. Most KOs when the timer hits `0:00` wins.
 - Standing on your own ink puddles gives you a small speed and reload boost —
   just like the games it's inspired by.
@@ -34,6 +45,21 @@ python3 -m http.server 8080
 Then open `http://localhost:8080` in your browser. Opening `index.html`
 directly via `file://` usually also works, but a local server is more
 reliable (especially for the multiplayer connection).
+
+### Playing on a phone
+
+Two easy ways to get it onto a phone:
+
+1. **GitHub Pages (best):** merge this branch and enable Pages on the repo
+   (Settings → Pages → "Deploy from a branch" → `main`, root folder). The
+   game is a plain static site, so it works as-is, and the HTTPS URL Pages
+   gives you is shareable with anyone — friends can join multiplayer rooms
+   from anywhere.
+2. **Same Wi-Fi:** run the local server above on a computer, find the
+   computer's local IP (e.g. `192.168.1.23`), and open
+   `http://192.168.1.23:8080` on the phone. Note: multiplayer needs each
+   player to open the game from somewhere; hosting it on Pages is much
+   simpler for that.
 
 ## Playing online with friends
 

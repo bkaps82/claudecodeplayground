@@ -13,6 +13,7 @@ html, body {
 #game {
   position: fixed; inset: 0; display: block; cursor: crosshair;
   image-rendering: pixelated;
+  touch-action: none;
 }
 
 button {
@@ -159,6 +160,29 @@ input[type="text"] {
   position: absolute; left: 50%; bottom: 90px; transform: translateX(-50%);
   display: none; background: rgba(10,22,8,0.8); padding: 8px 14px;
   border-radius: 8px; font-size: 9px; color: #ffe14a; border: 2px solid #3d7a2a;
+  pointer-events: auto; cursor: pointer;
+}
+
+/* keyboard vs touch labels */
+.touch-only { display: none; }
+.touch-mode .touch-only { display: inline; }
+.touch-mode .kb-only { display: none; }
+.touch-mode #recruitHint { padding: 14px 20px; font-size: 11px; }
+
+/* virtual joystick */
+#joyBase, #joyKnob {
+  display: none; position: absolute; transform: translate(-50%, -50%);
+  border-radius: 50%; pointer-events: none;
+}
+#joyBase {
+  width: 110px; height: 110px;
+  border: 3px solid rgba(255,255,255,0.35);
+  background: rgba(10,22,8,0.25);
+}
+#joyKnob {
+  width: 52px; height: 52px;
+  background: rgba(255,255,255,0.45);
+  border: 3px solid rgba(255,255,255,0.6);
 }
 
 #splattedBanner {
