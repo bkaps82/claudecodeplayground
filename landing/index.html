@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game Arcade</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 28px; padding: 24px;
+      background: radial-gradient(circle at 50% 20%, #23124d 0%, #0d0721 70%);
+      font-family: 'Courier New', monospace;
+      color: #fff; text-align: center;
+    }
+    h1 {
+      font-size: clamp(28px, 6vw, 44px);
+      color: #ffe14a;
+      text-shadow: 3px 3px 0 #ff3ea5, -2px -2px 0 #29c5f6;
+      letter-spacing: 3px;
+    }
+    p.sub { color: #b9a8e8; font-size: 14px; }
+    .games { display: flex; flex-wrap: wrap; gap: 22px; justify-content: center; }
+    a.card {
+      display: flex; flex-direction: column; gap: 10px;
+      width: min(320px, 84vw); padding: 26px 22px;
+      border-radius: 14px; text-decoration: none; color: #fff;
+      border: 3px solid; transition: transform 0.1s;
+    }
+    a.card:hover, a.card:active { transform: scale(1.04); }
+    .card .icon { font-size: 44px; }
+    .card .name { font-size: 19px; font-weight: bold; }
+    .card .desc { font-size: 12px; line-height: 1.6; opacity: 0.85; }
+    .card.ink { background: rgba(41, 197, 246, 0.12); border-color: #29c5f6; }
+    .card.ink .name { color: #29c5f6; }
+    .card.duel { background: rgba(255, 62, 165, 0.12); border-color: #ff3ea5; }
+    .card.duel .name { color: #ff3ea5; }
+  </style>
+</head>
+<body>
+  <h1>GAME ARCADE</h1>
+  <p class="sub">Pick your battle!</p>
+  <div class="games">
+    <a class="card ink" href="./ink-battle/">
+      <div class="icon">🦑🌲</div>
+      <div class="name">Ink Battle: Forest Arena</div>
+      <div class="desc">Splat friends with ink, recruit forest critters, grab power-ups. Top-down blocky forest battles, solo or online.</div>
+    </a>
+    <a class="card duel" href="./paint-duel/">
+      <div class="icon">⚔️🎨</div>
+      <div class="name">Paint Duel Octagon</div>
+      <div class="desc">Anime paint-sword duels in a 3D octagon arena. Slash, splash, and out-paint your rival.</div>
+    </a>
+  </div>
+</body>
+</html>

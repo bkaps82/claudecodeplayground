@@ -1,0 +1,71 @@
+# Combined GitHub Pages deploy: assembles every game in this repo into one
+# site (each under its own subpath, with a landing page at the root).
+# This exact file should exist on every branch that wants pushes to trigger
+# a redeploy — GitHub only runs push-triggered workflows defined in the
+# pushed branch itself. The build always checks out the latest of each game
+# branch, so a deploy from any branch publishes the newest of both games.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - claude/ink-battle-game-prototype-kcdqk7
+      - claude/anime-sword-paint-game-8jz1jx
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Ink Battle (static site)
+        uses: actions/checkout@v4
+        with:
+          ref: claude/ink-battle-game-prototype-kcdqk7
+          path: ink-battle
+      - name: Checkout Paint Duel (Vite app)
+        uses: actions/checkout@v4
+        with:
+          ref: claude/anime-sword-paint-game-8jz1jx
+          path: paint-duel
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: paint-duel/package-lock.json
+      - name: Build Paint Duel
+        working-directory: paint-duel
+        run: |
+          npm ci
+          npm run build
+      - name: Assemble combined site
+        run: |
+          mkdir -p site/ink-battle site/paint-duel
+          cp ink-battle/landing/index.html site/index.html
+          cp ink-battle/index.html site/ink-battle/
+          cp -r ink-battle/css ink-battle/js site/ink-battle/
+          cp -r paint-duel/dist/. site/paint-duel/
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
