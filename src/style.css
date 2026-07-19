@@ -309,6 +309,17 @@ kbd {
   -webkit-text-fill-color: unset;
 }
 
+#build-tag {
+  position: absolute;
+  right: calc(10px + env(safe-area-inset-right, 0px));
+  bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
 .spinner {
   width: 44px;
   height: 44px;
@@ -427,7 +438,42 @@ body.touch .controls-columns {
   position: absolute;
   inset: 0;
   top: 35%;
+  bottom: env(safe-area-inset-bottom, 0px);
   pointer-events: auto;
+}
+
+/* idle affordance so players can find the joystick area */
+.joy-hint {
+  position: absolute;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  border: 2px dashed color-mix(in srgb, var(--accent, #fff) 55%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: color-mix(in srgb, var(--accent, #fff) 75%, white);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: hintPulse 2.2s ease-in-out infinite;
+}
+
+.touchpad-left .joy-hint, .touchpad-solo .joy-hint { left: 34px; }
+.touchpad-right .joy-hint { right: 130px; }
+
+.joy-hint.dimmed { opacity: 0.12; }
+
+@keyframes hintPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .joy-hint { animation: none; }
 }
 
 .joy-base {
@@ -459,7 +505,9 @@ body.touch .controls-columns {
 
 .attack-btn {
   position: absolute;
-  bottom: 34px;
+  /* keep clear of the iOS Safari bottom toolbar / home indicator, where taps
+     get swallowed by browser chrome instead of reaching the page */
+  bottom: calc(44px + env(safe-area-inset-bottom, 0px));
   width: 84px;
   height: 84px;
   border-radius: 50%;

@@ -20,6 +20,12 @@ export class TouchPad {
     this.baseEl.appendChild(this.knobEl);
     this.zoneEl.appendChild(this.baseEl);
 
+    this.hintEl = document.createElement('div');
+    this.hintEl.className = 'joy-hint';
+    this.hintEl.style.setProperty('--accent', `var(${accentVar})`);
+    this.hintEl.textContent = 'MOVE';
+    this.zoneEl.appendChild(this.hintEl);
+
     this.attackEl = document.createElement('button');
     this.attackEl.className = 'attack-btn';
     this.attackEl.textContent = '⚔';
@@ -59,6 +65,7 @@ export class TouchPad {
     this.baseEl.style.left = `${t.clientX}px`;
     this.baseEl.style.top = `${t.clientY}px`;
     this.baseEl.classList.add('active');
+    this.hintEl.classList.add('dimmed');
     this._applyKnob(0, 0);
   }
 
