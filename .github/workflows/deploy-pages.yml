@@ -3,7 +3,7 @@
 # This exact file should exist on every branch that wants pushes to trigger
 # a redeploy — GitHub only runs push-triggered workflows defined in the
 # pushed branch itself. The build always checks out the latest of each game
-# branch, so a deploy from any branch publishes the newest of both games.
+# branch, so a deploy from any branch publishes the newest of all games.
 name: Deploy to GitHub Pages
 
 on:
@@ -12,6 +12,7 @@ on:
       - main
       - claude/ink-battle-game-prototype-kcdqk7
       - claude/anime-sword-paint-game-8jz1jx
+      - claude/third-game-implementation-yx5cuq
   workflow_dispatch:
 
 permissions:
@@ -37,23 +38,36 @@ jobs:
         with:
           ref: claude/anime-sword-paint-game-8jz1jx
           path: paint-duel
+      - name: Checkout Sword Quest (Vite app)
+        uses: actions/checkout@v4
+        with:
+          ref: claude/third-game-implementation-yx5cuq
+          path: sword-quest
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: paint-duel/package-lock.json
+          cache-dependency-path: |
+            paint-duel/package-lock.json
+            sword-quest/package-lock.json
       - name: Build Paint Duel
         working-directory: paint-duel
         run: |
           npm ci
           npm run build
+      - name: Build Sword Quest
+        working-directory: sword-quest
+        run: |
+          npm ci
+          npm run build
       - name: Assemble combined site
         run: |
-          mkdir -p site/ink-battle site/paint-duel
+          mkdir -p site/ink-battle site/paint-duel site/sword-quest
           cp ink-battle/landing/index.html site/index.html
           cp ink-battle/index.html site/ink-battle/
           cp -r ink-battle/css ink-battle/js site/ink-battle/
           cp -r paint-duel/dist/. site/paint-duel/
+          cp -r sword-quest/dist/. site/sword-quest/
       - uses: actions/configure-pages@v5
         with:
           enablement: true

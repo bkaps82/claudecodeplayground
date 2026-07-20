@@ -10,8 +10,9 @@ together on a single GitHub Pages site.
 | 🎪 **Arcade landing page** | [bkaps82.github.io/claudecodeplayground](https://bkaps82.github.io/claudecodeplayground/) | — |
 | 🦑🌲 **Ink Battle: Forest Arena** | […/ink-battle/](https://bkaps82.github.io/claudecodeplayground/ink-battle/) | [`claude/ink-battle-game-prototype-kcdqk7`](../../tree/claude/ink-battle-game-prototype-kcdqk7) |
 | ⚔️🎨 **Paint Duel Octagon** | […/paint-duel/](https://bkaps82.github.io/claudecodeplayground/paint-duel/) | [`claude/anime-sword-paint-game-8jz1jx`](../../tree/claude/anime-sword-paint-game-8jz1jx) |
+| 🗡️🌋 **Sword Quest: Monster Worlds** | […/sword-quest/](https://bkaps82.github.io/claudecodeplayground/sword-quest/) | [`claude/third-game-implementation-yx5cuq`](../../tree/claude/third-game-implementation-yx5cuq) |
 
-Both games work on desktop **and** phones (touch controls), and both support
+All games work on desktop **and** phones (touch controls), and all support
 online multiplayer over peer-to-peer WebRTC — no accounts, no installs: open
 the link and play.
 
@@ -21,6 +22,9 @@ the link and play.
   up to 4 players with a shareable room code.
 - **Paint Duel Octagon** — anime paint-sword duels in a 3D octagon arena,
   built with Three.js.
+- **Sword Quest: Monster Worlds** — first-person monster bonking, designed
+  by two consultants ages 6 and 8. Level your paper sword up to BEDROCK
+  across plains and volcano worlds; co-op or PvP online.
 
 ## How the hosting works (short version)
 
@@ -33,9 +37,10 @@ one site under subpaths:
 /             ← landing page ("pick your game")
 /ink-battle/  ← static files, copied straight from its branch
 /paint-duel/  ← Vite build output from its branch
+/sword-quest/ ← Vite build output from its branch
 ```
 
-Any push to `main` or to either game branch redeploys the whole site with the
+Any push to `main` or to any game branch redeploys the whole site with the
 **latest commit of every game**, so the games can keep evolving independently
 on their own branches without stepping on each other.
 

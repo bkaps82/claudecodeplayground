@@ -19,16 +19,17 @@ arcade on every run:
 
 1. **Check out every game branch** (each into its own directory), always at
    its latest commit.
-2. **Build what needs building** — Paint Duel is a Vite app, so it gets
-   `npm ci && npm run build`; Ink Battle is plain static files and is copied
-   as-is.
+2. **Build what needs building** — Paint Duel and Sword Quest are Vite
+   apps, so each gets `npm ci && npm run build`; Ink Battle is plain static
+   files and is copied as-is.
 3. **Assemble one site folder:**
 
    ```
    site/
    ├── index.html      ← landing page (lives in landing/ on the ink-battle branch)
    ├── ink-battle/     ← copied from the ink-battle branch
-   └── paint-duel/     ← Vite build output (dist/) from the paint-duel branch
+   ├── paint-duel/     ← Vite build output (dist/) from the paint-duel branch
+   └── sword-quest/    ← Vite build output (dist/) from the sword-quest branch
    ```
 
 4. **Deploy** the folder to GitHub Pages via the official
@@ -49,6 +50,7 @@ So an **identical copy** of `deploy-pages.yml` lives on:
 - `main`
 - `claude/ink-battle-game-prototype-kcdqk7`
 - `claude/anime-sword-paint-game-8jz1jx`
+- `claude/third-game-implementation-yx5cuq` (Sword Quest)
 
 That way a push to any of them triggers a redeploy. The copies must stay
 identical — if you change the workflow, change it on every branch that
