@@ -9,6 +9,13 @@ No installs, no accounts — open it in a browser and play. Works solo against
 bots, or online with friends over peer-to-peer WebRTC (one player hosts and
 shares a short room code).
 
+**▶️ Play it now:**
+[bkaps82.github.io/claudecodeplayground/ink-battle](https://bkaps82.github.io/claudecodeplayground/ink-battle/)
+— works on desktop and phones. It's part of the repo's
+[game arcade](https://bkaps82.github.io/claudecodeplayground/), which co-hosts
+every game in this repo on one GitHub Pages site; how that works is documented
+in [docs/DEPLOYMENT.md on main](../../blob/main/docs/DEPLOYMENT.md).
+
 ## How to play
 
 **On a computer:**
@@ -48,18 +55,15 @@ reliable (especially for the multiplayer connection).
 
 ### Playing on a phone
 
-Two easy ways to get it onto a phone:
+The easiest way is the live deployment:
+[bkaps82.github.io/claudecodeplayground/ink-battle](https://bkaps82.github.io/claudecodeplayground/ink-battle/)
+— a public HTTPS link anyone can open, so friends can join multiplayer rooms
+from anywhere. Every push to this branch automatically redeploys it (see
+[docs/DEPLOYMENT.md on main](../../blob/main/docs/DEPLOYMENT.md)).
 
-1. **GitHub Pages (best):** merge this branch and enable Pages on the repo
-   (Settings → Pages → "Deploy from a branch" → `main`, root folder). The
-   game is a plain static site, so it works as-is, and the HTTPS URL Pages
-   gives you is shareable with anyone — friends can join multiplayer rooms
-   from anywhere.
-2. **Same Wi-Fi:** run the local server above on a computer, find the
-   computer's local IP (e.g. `192.168.1.23`), and open
-   `http://192.168.1.23:8080` on the phone. Note: multiplayer needs each
-   player to open the game from somewhere; hosting it on Pages is much
-   simpler for that.
+For local tinkering on the same Wi-Fi instead: run the local server above on
+a computer, find the computer's local IP (e.g. `192.168.1.23`), and open
+`http://192.168.1.23:8080` on the phone.
 
 ## Playing online with friends
 
