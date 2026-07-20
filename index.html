@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Sword Quest: Monster Worlds</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- ===== Menus ===== -->
+    <div id="menu" class="overlay">
+      <div class="menu-panel">
+        <h1 class="game-title"><span class="title-sword">⚔️</span> SWORD QUEST</h1>
+        <p class="game-subtitle">Monster Worlds</p>
+        <p class="menu-tagline">Paper sword today. BEDROCK SWORD tomorrow.</p>
+        <div id="menu-main" class="menu-page">
+          <button id="btn-solo" class="menu-btn primary">🗡️ Play Solo</button>
+          <button id="btn-host" class="menu-btn">🌍 Host Online</button>
+          <button id="btn-join" class="menu-btn">🚪 Join Online</button>
+          <div class="menu-hint">WASD move · mouse look · click to swing · space to jump<br/>1 / 2 to upgrade sword / armor · On phones: joystick + buttons</div>
+        </div>
+        <div id="menu-name" class="menu-page hidden">
+          <label class="menu-label" for="name-input">Your hero name</label>
+          <input id="name-input" maxlength="12" placeholder="Hero" autocomplete="off" />
+          <button id="btn-name-go" class="menu-btn primary">Continue</button>
+          <button class="menu-btn back-btn" data-back>← Back</button>
+        </div>
+        <div id="menu-host" class="menu-page hidden">
+          <p class="menu-label">Room code — share it with your friend:</p>
+          <div id="host-code" class="room-code">····</div>
+          <p id="host-status" class="net-status">Setting up room…</p>
+          <button class="menu-btn back-btn" data-back>← Cancel</button>
+        </div>
+        <div id="menu-join" class="menu-page hidden">
+          <label class="menu-label" for="join-code">Enter the 4-digit room code</label>
+          <input id="join-code" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off" />
+          <button id="btn-join-go" class="menu-btn primary">Join Battle</button>
+          <p id="join-status" class="net-status"></p>
+          <button class="menu-btn back-btn" data-back>← Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HUD ===== -->
+    <div id="hud" class="hidden">
+      <div id="crosshair">+</div>
+
+      <div id="hud-top-left">
+        <div id="hp-bar-wrap"><div id="hp-bar"></div><span id="hp-text">100</span></div>
+        <div id="xp-display">✨ <span id="xp-value">0</span> XP</div>
+        <div id="world-label">🌾 Plains World</div>
+      </div>
+
+      <div id="hud-gear">
+        <div class="gear-slot">
+          <div class="gear-icon" id="sword-icon">🗡️</div>
+          <div class="gear-info">
+            <div class="gear-name" id="sword-name">Paper Sword</div>
+            <button class="upgrade-btn" id="btn-upgrade-sword">▲ 25 XP</button>
+          </div>
+        </div>
+        <div class="gear-slot">
+          <div class="gear-icon" id="armor-icon">🛡️</div>
+          <div class="gear-info">
+            <div class="gear-name" id="armor-name">Paper Armor</div>
+            <button class="upgrade-btn" id="btn-upgrade-armor">▲ 25 XP</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="feed"></div>
+      <div id="net-badge" class="hidden">🟢 Friend connected</div>
+      <div id="portal-hint" class="hidden">Walk into the portal!</div>
+      <div id="damage-vignette"></div>
+
+      <!-- touch controls (shown only on touch devices) -->
+      <div id="touch-ui" class="hidden">
+        <div id="joystick-zone"></div>
+        <div id="look-zone"></div>
+        <button id="btn-attack-touch">⚔️</button>
+        <button id="btn-jump-touch">⤴</button>
+      </div>
+    </div>
+
+    <!-- respawn overlay -->
+    <div id="ko-overlay" class="overlay hidden">
+      <div class="ko-panel">
+        <h2>💫 You got bonked!</h2>
+        <p id="ko-msg">Respawning…</p>
+      </div>
+    </div>
+
+    <!-- disconnect overlay -->
+    <div id="dc-overlay" class="overlay hidden">
+      <div class="ko-panel">
+        <h2>🔌 Friend disconnected</h2>
+        <button id="btn-dc-menu" class="menu-btn primary">Back to Menu</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
